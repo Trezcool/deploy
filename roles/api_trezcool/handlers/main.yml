@@ -1,0 +1,10 @@
+---
+- name: Restart redis
+  service:
+    name: redis.service
+    state: restarted
+
+- name: Reload docker
+  service:
+    name: docker.service
+    state: reloaded

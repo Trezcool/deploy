@@ -1,0 +1,6 @@
+---
+- name: Bootstrap the server
+  hosts: '{{ host }}'
+  debugger: on_failed
+  roles:
+    - common

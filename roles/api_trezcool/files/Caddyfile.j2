@@ -1,0 +1,43 @@
+{
+    email {{ admin_email }}
+}
+
+(forwarded_headers) {
+    header_up Host              {host}
+    header_up X-Real-IP         {remote_host}
+    header_up X-Forwarded-Port  {port}
+}
+
+(security_headers) {
+	header {
+        Strict-Transport-Security   max-age=31536000; includeSubDomains
+        X-Content-Type-Options      nosniff
+        X-Frame-Options             DENY
+        X-XSS-Protection            1; mode=block
+    }
+}
+
+(log_file) {
+    log {
+        format console
+        output file    /var/log/caddy/{host}.access.log
+    }
+}
+
+masomo.api.trezcool.com {
+    reverse_proxy /debug* 127.0.0.1:9000
+    basicauth /debug* {
+        {{ http_auth.username }} {{ http_auth.password }}
+    }
+
+    reverse_proxy * 127.0.0.1:8000 {
+        import forwarded_headers
+
+        # health_path ...
+        # health_interval ... # eg. 5s, 5m, 1h, 1h30m
+        # health_timeout ...
+    }
+
+    import security_headers
+    import log_file
+}

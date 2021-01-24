@@ -1,0 +1,30 @@
+- name: Set Docker Compose definition
+  community.docker.docker_compose:
+    project_name: shared
+#    project_src: roles/api_trezcool/files # fixme: why u no working :(
+    pull: yes
+    definition:
+      version: '2'
+
+      services:
+        db:
+          container_name: db
+          image: postgres:13
+          environment:
+            POSTGRES_USER: '{{ db_admin_user }}'
+            POSTGRES_PASSWORD: '{{ db_admin_password }}'
+          volumes:
+            - pg-data:/var/lib/postgresql/db-data
+          ports:
+            - '5432:5432'
+          restart: always
+
+        redis:
+          container_name: redis
+          image: redis
+          ports:
+            - '6379:6379'
+          restart: always
+
+      volumes:
+        pg-data:

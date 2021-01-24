@@ -1,0 +1,45 @@
+---
+- name: Add the GPG key for the official Docker repository
+  apt_key:
+    url: 'https://download.docker.com/linux/{{ system.platform }}/gpg'
+
+- name: Add the Docker repository to APT sources
+  apt_repository:
+    repo: 'deb [arch=amd64] https://download.docker.com/linux/{{ system.platform }} {{ system.release }} stable'
+
+- name: Install Docker
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    update_cache: yes
+
+- name: Set docker daemon configuration
+  copy:
+    src: files/docker-daemon.json
+    dest: /etc/docker/daemon.json
+    mode: 0640
+  notify: Reload docker
+
+- name: Add SSH user to the docker group
+  user:
+    name: '{{ ansible_ssh_user }}'
+    groups:
+      - docker
+    append: yes
+
+- name: Install Docker Compose
+  get_url:
+    url: 'https://github.com/docker/compose/releases/download/1.28.0/docker-compose-{{ system.kernel }}-{{ system.machine }}'
+    dest: /usr/local/bin/docker-compose
+    owner: '{{ ansible_ssh_user }}'
+    mode: u+x,g+x
+
+- name: Install pip packages required for Ansible to manage Docker Compose
+  pip:
+    name:
+      - docker
+      - docker-compose
+      - PyYAML
+    state: latest

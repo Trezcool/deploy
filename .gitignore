@@ -1,0 +1,22 @@
+.DS_Store
+*~
+
+# Python bytecode
+*.pyc
+*.pyo
+__pycache__
+
+# Vagrant
+.vagrant/
+
+# local env
+env/
+
+# ansible
+.vault_pass
+*.retry
+cachedir/
+
+# misc
+venv/
+.idea/

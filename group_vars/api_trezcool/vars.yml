@@ -1,0 +1,24 @@
+---
+hostname: apitrezcool
+
+system:
+  kernel: Linux
+  machine: x86_64
+  platform: ubuntu
+  release: focal  # 20.04
+
+http_auth:
+  username: '{{ vault_http_auth_username }}'
+  password: '{{ vault_http_auth_password }}'
+
+db_admin_user: '{{ vault_db_admin_user }}'
+db_admin_password: '{{ vault_db_admin_password }}'
+
+apps:
+  masomo:
+    db:
+      engine: postgres
+      name: masomo
+      user: '{{ vault_masomo_db_user }}'
+      password: '{{ vault_masomo_db_password }}'
+      extensions: []

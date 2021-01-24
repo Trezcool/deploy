@@ -1,0 +1,63 @@
+---
+- name: Update and ugrade APT cache to the lastest packages
+  apt:
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: Configure hostname
+  block:
+    - name: Set hostname
+      hostname:
+        name: '{{ hostname }}'
+
+    - name: Add hostname to hosts file
+      lineinfile:
+        path: '/etc/hosts'
+        regexp: '^{{ host_ipv4 }}'
+        line: '{{ host_ipv4 }} {{ fqdn }} {{ hostname }}'
+
+- name: Set timezone to Africa/Johannesburg
+  community.general.timezone:
+    name: Africa/Johannesburg
+
+- name: Install system packages
+  apt:
+    pkg:
+      - unattended-upgrades
+      - fail2ban
+      - sendmail
+      # common deps
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+      - python3-pip
+
+- name: Adjust APT unattended upgrades and update intervals
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0640
+  loop:
+    - { src: 'files/50unattended-upgrades', dest: '/etc/apt/apt.conf.d/' }
+    - { src: 'files/20auto-upgrades', dest: '/etc/apt/apt.conf.d/' }
+
+- name: Adjust Fail2ban configuration
+  template:
+    src: files/jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    mode: 0640
+  notify: Restart fail2ban
+
+#- name: Update SSH configuration
+#  replace:
+#    path: /etc/ssh/sshd_config
+#    regexp: '{{ item.regex }}'
+#    replace: '{{ item.replace }}'
+#    backup: yes
+#  loop:
+#    - { regex: '^PermitRootLogin yes', replace: 'PermitRootLogin no' }
+#    - { regex: '^PasswordAuthentication yes', replace: 'PasswordAuthentication no' }
+#    - { regex: '^UsePAM yes', replace: 'UsePAM no' }
+#  notify: Restart ssh

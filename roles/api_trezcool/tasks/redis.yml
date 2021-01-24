@@ -1,0 +1,21 @@
+---
+- name: install Redis
+  apt:
+    pkg:
+      - redis-server
+
+- name: Configure systemd to manage Redis as a service
+  replace:
+    path: /etc/redis/redis.conf
+    regexp: '{{ item.regex }}'
+    replace: '{{ item.replace }}'
+    backup: yes
+  loop:
+    - { regex: '^supervised no', replace: 'supervised systemd' }
+#    - { regex: '^# requirepass foobared', replace: 'requirepass {{ redis_password }}' }
+#  notify: Restart redis
+
+- name: Disable Redis for now; use container
+  service:
+    name: redis.service
+    state: stopped

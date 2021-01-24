@@ -1,0 +1,27 @@
+---
+- name: Update and ugrade APT cache to the lastest packages
+  apt:
+    upgrade: dist
+    cache_valid_time: 3600
+
+- name: Set up Postgres
+  include_tasks: roles/api_trezcool/tasks/postgres.yml
+
+- name: Set up Redis
+  include_tasks: roles/api_trezcool/tasks/redis.yml
+
+- name: Set up Docker & Compose
+  include_tasks: roles/api_trezcool/tasks/docker.yml
+
+- name: Set up shared Docker Compose resources
+  include_tasks: roles/api_trezcool/tasks/shared_compose_resources.yml
+
+#- name: Set up Caddy
+#  include_role:
+#    name: caddy
+#  vars:
+#    caddy_packages: [ "github.com/caddy-dns/lego-deprecated" ]
+#    caddy_environment_variables:
+#      GODADDY_API_KEY: XXX
+#      GODADDY_API_SECRET: XXX
+#    caddy_config: "{{ lookup('template', 'files/Caddyfile.j2') }}"

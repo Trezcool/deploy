@@ -1,0 +1,5 @@
+---
+fqdn: '{{ inventory_hostname }}'
+host_ipv4: '{{ hostvars[inventory_hostname].ansible_facts.eth0.ipv4.address }}'
+
+admin_email: kambembotresor@gmail.com

@@ -1,0 +1,10 @@
+---
+# $ ansible-galaxy install -r requirements.yml
+
+collections:
+  - community.general
+  - community.docker
+  - community.postgresql
+
+roles:
+  - caddy_ansible.caddy_ansible
