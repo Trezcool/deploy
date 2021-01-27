@@ -7,8 +7,8 @@
       version: '2'
 
       services:
-        db:
-          container_name: db
+        postgres:
+          container_name: postgres
           image: postgres:13
           environment:
             POSTGRES_USER: '{{ db_admin_user }}'

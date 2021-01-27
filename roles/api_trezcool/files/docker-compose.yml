@@ -5,8 +5,8 @@ services:
     container_name: db
     image: postgres:13
     environment:
-      POSTGRES_USER: '{{ vault_db_admin_user }}'
-      POSTGRES_PASSWORD: '{{ vault_db_admin_password }}'
+      POSTGRES_USER: '{{ db_admin_user }}'
+      POSTGRES_PASSWORD: '{{ db_admin_password }}'
     volumes:
       - pg-data:/var/lib/postgresql/db-data
     ports:
