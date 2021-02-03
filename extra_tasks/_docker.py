@@ -1,7 +1,7 @@
 from . import ssh
 
 
-def docker_exec(ctx, instance, container, ssh_user='ubuntu', user='root', cmd=''):
+def docker_exec(ctx, instance, container, ssh_user='ubuntu', user='root', cmd='ash'):  # ash (for alpine) | bash
     ssh(ctx, instance, user=ssh_user, cmd=f"'docker exec -it --user {user} {container} {cmd}'")
 
 

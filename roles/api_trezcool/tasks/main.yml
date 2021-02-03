@@ -16,12 +16,14 @@
 - name: Set up shared Docker Compose resources
   include_tasks: roles/api_trezcool/tasks/shared_compose_resources.yml
 
-#- name: Set up Caddy
-#  include_role:
-#    name: caddy
-#  vars:
-#    caddy_packages: [ "github.com/caddy-dns/lego-deprecated" ]
-#    caddy_environment_variables:
-#      GODADDY_API_KEY: XXX
-#      GODADDY_API_SECRET: XXX
-#    caddy_config: "{{ lookup('template', 'files/Caddyfile.j2') }}"
+- name: Set up Caddy
+  include_role:
+    name: caddy_ansible.caddy_ansible
+  vars:
+    caddy_packages: [ "github.com/caddy-dns/route53" ]
+    caddy_environment_variables:
+      AWS_ACCESS_KEY_ID: '{{ aws_access_key_id }}'
+      AWS_SECRET_ACCESS_KEY: '{{ aws_secret_access_key }}'
+      AWS_REGION: '{{ aws_region }}'
+    caddy_config: "{{ lookup('template', 'files/Caddyfile.j2') }}"
+    caddy_systemd_capabilities_enabled: yes
