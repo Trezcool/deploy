@@ -13,9 +13,4 @@
   loop:
     - { regex: '^supervised no', replace: 'supervised systemd' }
 #    - { regex: '^# requirepass foobared', replace: 'requirepass {{ redis_password }}' }
-#  notify: Restart redis
-
-- name: Disable Redis for now; use container
-  service:
-    name: redis.service
-    state: stopped
+  notify: Restart redis

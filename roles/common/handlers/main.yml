@@ -1,10 +1,10 @@
 ---
-- name: Restart fail2ban
+- name: Restart redis
   service:
-    name: fail2ban
+    name: redis.service
     state: restarted
 
-- name: Restart ssh
+- name: Reload docker
   service:
-    name: ssh
-    state: restarted
+    name: docker.service
+    state: reloaded

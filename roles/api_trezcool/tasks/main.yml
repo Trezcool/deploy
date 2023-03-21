@@ -4,14 +4,14 @@
     upgrade: dist
     cache_valid_time: 3600
 
-- name: Set up Postgres
-  include_tasks: roles/api_trezcool/tasks/postgres.yml
+#- name: Set up Postgres
+#  include_tasks: roles/common/tasks/postgres.yml
 
-- name: Set up Redis
-  include_tasks: roles/api_trezcool/tasks/redis.yml
+#- name: Set up Redis
+#  include_tasks: roles/common/tasks/redis.yml
 
 - name: Set up Docker & Compose
-  include_tasks: roles/api_trezcool/tasks/docker.yml
+  include_tasks: roles/common/tasks/docker.yml
 
 - name: Set up shared Docker Compose resources
   include_tasks: roles/api_trezcool/tasks/shared_compose_resources.yml
