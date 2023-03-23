@@ -27,7 +27,7 @@
         ssl_mode: disable  # single host; no need
 
     - name: Set up apps DBs
-      include_tasks: roles/api_trezcool/tasks/_pg_app_db.yml
+      include_tasks: roles/common/tasks/_pg_app_db.yml
       loop: '{{ apps | dict2items }}'
       loop_control:
         loop_var: app
